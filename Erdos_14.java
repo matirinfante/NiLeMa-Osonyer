@@ -1,5 +1,3 @@
-package Testing;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,36 +7,32 @@ public class Erdos_14 {
 
     static Queue cola;
     static ArrayList<Integer>[] ady;
-    static int M = 0, S = 0, CANT = 0;
-    static boolean[] visitados;
+    static int M = 0, S = 1, CANT = 0;
+    static int[] visitados;
 
     public static void bfs() {
         int actual;
-        boolean flag = false;
         cola = new LinkedList();
         cola.offer(1);
-
+        visitados[1] = 0;
         while (!cola.isEmpty()) {
             actual = (int) cola.poll();
-            visitados[actual] = true;
+
             CANT++;
 
             for (Integer adyacente : ady[actual]) {
-                if (!visitados[adyacente] && !cola.contains(adyacente)) {
-                    cola.offer(adyacente);
-                    flag = true;
-                    S += M + 1;
+                int nuevaDist = visitados[actual] + 1;
 
+                if (visitados[adyacente] == -1 && !cola.contains(adyacente)) {
+                    cola.offer(adyacente);
+                    visitados[adyacente] = nuevaDist;
+                    M = nuevaDist;
                 }
             }
-
-            if (flag) {
-                M++;
-                flag = false;
-            }
-
         }
-
+        for (int i = 1; i < visitados.length - 1; i++) {
+            S += visitados[i];
+        }
     }
 
     public static void main(String[] args) {
@@ -49,9 +43,9 @@ public class Erdos_14 {
         for (int i = 0; i < n + 1; i++) {
             ady[i] = new ArrayList();
         }
-        visitados = new boolean[n + 1];
+        visitados = new int[n + 1];
         for (int i = 0; i < n + 1; i++) {
-            visitados[i] = false;
+            visitados[i] = -1;
         }
         for (int k = 0; k < a; k++) {
             int autoresArt = in.nextInt();
@@ -69,8 +63,7 @@ public class Erdos_14 {
             }
         }
         bfs();
-        System.out.println("CANTIDAD: " + CANT + " NUM MAX: " + M + " SUMA: " + S);
+        System.out.println(CANT + " "+ M + " "+ S);
     }
 
 }
-
