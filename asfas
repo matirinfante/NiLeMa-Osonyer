@@ -1,0 +1,39 @@
+package Inimputabilidad;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Longest_path_tree {
+	static ArrayList<Integer>[] g;
+	static int max, fin;
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		
+		int n = in.nextInt();
+		g = new ArrayList[n+1];
+		
+		for(int i = 1; i <= n;i++){
+			g[i] = new ArrayList();
+		}
+		for (int i = 0; i < n-1; i++) {
+			int u = in.nextInt(), v = in.nextInt();
+			g[u].add(v);
+			g[v].add(u);
+		}
+		dfs(1, 0, 0);
+		dfs(fin,0,0);
+		System.out.println(max);
+	}
+	
+	public static int dfs(int actual,int anterior, int acumulado){
+		
+		for (Integer ady : g[actual]) {
+			if(anterior != ady){
+				max = dfs(anterior, actual, acumulado+ 1);
+			}
+		}
+		return max;
+		 
+	}
+}
